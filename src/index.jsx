@@ -60,9 +60,13 @@ const App = () => {
   <form id="search" onSubmit={(e) => {
     e.preventDefault();
     getCityWeather(city)
+    setCity("");
     console.log(city)
   }}>
-    <input type="text" placeholder="Search..." value={city} onChange={(e) => setCity(e.target.value)}/>
+    <input type="text" placeholder="Search..." value={city} onChange={(e) => {
+      setCity(e.target.value)
+    }
+    }/>
   </form>
 </div>
 
