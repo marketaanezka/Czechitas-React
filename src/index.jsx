@@ -12,17 +12,12 @@ const getTimefromUnix = (unix) => {
 
 const App = () => {
   const [weather, setWeather] = useState(null);
-  const [sunrise, setSunrise] = useState(null);
-  const [sunset, setSunset]= useState (null)
 
   const fetchWeather = () => {
-    fetch("https://api.openweathermap.org/data/2.5/weather?q=Paris&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f")
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=Prague&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f")
     .then((response) => { 
       return response.json().then((data) => {
-        console.log(data);
         setWeather(data);
-        setSunrise(getTimefromUnix(data.sys.sunrise));
-        setSunset(getTimefromUnix(data.sys.sunset))
       }).catch((err) => {
           console.log("error", err);
       }) 
@@ -30,8 +25,14 @@ const App = () => {
   };
 
   const getCityWeather = (city) => {
-    fetch(`api.openweathermap.org/data/2.5/weather?q=${city}&appid=60990aef3d3c4f5a36b9de246444ca2f`)
-      .then(res => res.json())
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f`)
+    .then((response) => { 
+      return response.json().then((data) => {
+        setWeather(data);
+      }).catch((err) => {
+          console.log("error", err);
+      }) 
+  });
   }
 
 
@@ -47,12 +48,12 @@ const App = () => {
 
 {/* tlačítka pro výběr města - bonusová část úkolu */}
 
-{/* <div className="button-group">
+<div className="button-group">
   <button className="button"><i className="fas fa-map-marker-alt"></i></button>
-  <button className="button" onClick={() => getCityWeather(Prague)}>Praha</button>
-  <button className="button" onClick={() => getCityWeather(NewYork)}>New York</button>
-  <button className="button" onClick={() => getCityWeather(Sydney)}>Sydney</button>
-</div> */}
+  <button className="button" onClick={() => getCityWeather("Prague")}>Praha</button>
+  <button className="button" onClick={() => getCityWeather("Paris")}>Paříž</button>
+  <button className="button" onClick={() => getCityWeather("Tokyo")}>Tokyo</button>
+</div>
 
 
 
@@ -96,14 +97,14 @@ const App = () => {
        <div className="weather__section">
         <h3 className="weather__title">Východ slunce</h3>
         <div className="weather__value">
-          <span id="vychod">{sunrise}</span>
+          <span id="vychod">{getTimefromUnix(weather.sys.sunrise)}</span>
         </div>
       </div>
        
       <div className="weather__section">
         <h3 className="weather__title">Západ slunce</h3>
         <div className="weather__value">
-          <span id="zapad">{sunset}</span>
+          <span id="zapad">{getTimefromUnix(weather.sys.sunset)}</span>
         </div>
       </div>
     </div>
