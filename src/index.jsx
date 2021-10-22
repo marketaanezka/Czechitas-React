@@ -12,9 +12,10 @@ const getTimefromUnix = (unix) => {
 
 const App = () => {
   const [weather, setWeather] = useState(null);
+  const [city, setCity] = useState('');
 
   const fetchWeather = () => {
-    fetch("https://api.openweathermap.org/data/2.5/weather?q=Prague&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f")
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=Brno&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f")
     .then((response) => { 
       return response.json().then((data) => {
         setWeather(data);
@@ -55,6 +56,15 @@ const App = () => {
   <button className="button" onClick={() => getCityWeather("Tokyo")}>Tokyo</button>
 </div>
 
+<div className="button-group">
+  <form id="search" onSubmit={(e) => {
+    e.preventDefault();
+    getCityWeather(city)
+    console.log(city)
+  }}>
+    <input type="text" placeholder="Search..." value={city} onChange={(e) => setCity(e.target.value)}/>
+  </form>
+</div>
 
 
 <div className="weather">
