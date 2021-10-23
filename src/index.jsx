@@ -50,10 +50,9 @@ const App = () => {
 {/* tlačítka pro výběr města - bonusová část úkolu */}
 
 <div className="button-group">
-  <button className="button"><i className="fas fa-map-marker-alt"></i></button>
-  <button className="button" onClick={() => getCityWeather("Prague")}>Praha</button>
-  <button className="button" onClick={() => getCityWeather("Paris")}>Paříž</button>
-  <button className="button" onClick={() => getCityWeather("Tokyo")}>Tokyo</button>
+  <button className="button" onClick={() => getCityWeather("Prague")}>Prague</button>
+  <button className="button" onClick={() => getCityWeather("Tenerife")}>Tenerife</button>
+  <button className="button" onClick={() => getCityWeather("Reykjavik")}>Reykjavik</button>
 </div>
 
 <div className="button-group">
@@ -67,21 +66,23 @@ const App = () => {
       setCity(e.target.value)
     }
     }/>
+    <input type="submit" value="Show weather" />
   </form>
 </div>
 
 
 <div className="weather">
-{weather === null ? "loading" : (
+
   <div className="weather__current">
+  {weather === null ? "loading" : (
+    <>
     <h2 className="weather__city" id="mesto">
       {weather.name}
     </h2>
 
     <div className="weather__inner weather__inner--center">
       <div className="weather__section weather__section--temp">
-        {weather && (<span className="weather__temp-value" id="teplota">{Math.round(weather.main.temp)}</span>
-        )}
+        <span className="weather__temp-value" id="teplota">{Math.round(weather.main.temp)}</span>
         <span className="weather__temp-unit">°C</span>
         
         <div className="weather__description" id="popis">{weather.weather[0].main}</div>
@@ -93,13 +94,13 @@ const App = () => {
 
     <div className="weather__inner">
       <div className="weather__section">
-        <h3 className="weather__title">Vítr</h3>
+        <h3 className="weather__title">Wind</h3>
         <div className="weather__value">
           <span id="vitr">{weather.wind.speed}</span> km/h
         </div>
       </div>
       <div className="weather__section">
-        <h3 className="weather__title">Vlhkost</h3>
+        <h3 className="weather__title">Humidity</h3>
         <div className="weather__value">
           <span id="vlhkost">{weather.main.humidity}</span> %
         </div>
@@ -109,23 +110,25 @@ const App = () => {
     <div className="weather__inner">
      
        <div className="weather__section">
-        <h3 className="weather__title">Východ slunce</h3>
+        <h3 className="weather__title">Sunrise</h3>
         <div className="weather__value">
           <span id="vychod">{getTimefromUnix(weather.sys.sunrise)}</span>
         </div>
       </div>
        
       <div className="weather__section">
-        <h3 className="weather__title">Západ slunce</h3>
+        <h3 className="weather__title">Sunset</h3>
         <div className="weather__value">
           <span id="zapad">{getTimefromUnix(weather.sys.sunset)}</span>
         </div>
       </div>
     </div>
+    </>
+    )}
   </div>
 
   
-)}
+
   
 
   {/* <div className="weather__forecast" id="predpoved">
