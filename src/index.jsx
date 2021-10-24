@@ -13,28 +13,42 @@ const getTimefromUnix = (unix) => {
 const App = () => {
   const [weather, setWeather] = useState(null);
   const [city, setCity] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const fetchWeather = () => {
+    setLoading(true);
     fetch("https://api.openweathermap.org/data/2.5/weather?q=Brno&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f")
     .then((response) => { 
       return response.json().then((data) => {
         setWeather(data);
+        setLoading(false);
       }).catch((err) => {
-          console.log("error", err);
+         console.log("error", err);
       }) 
   });
   };
 
   const getCityWeather = (city) => {
+    if (city !== "") {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f`)
     .then((response) => { 
-      return response.json().then((data) => {
-        setWeather(data);
-      }).catch((err) => {
-          console.log("error", err);
+      if (response.ok) {
+        return response.json().then((data) => {
+          setWeather(data);
+          console.log(data);
+          setError(false);
+        })
+      } else {
+        setError(true)
+      }})      
+    .catch((err) => {
+      setError(true);
+      console.log("error", err);
       }) 
-  });
-  }
+    }
+    }
+  
 
 
   useEffect(() => {
@@ -55,74 +69,74 @@ const App = () => {
   <button className="button" onClick={() => getCityWeather("Reykjavik")}>Reykjavik</button>
 </div>
 
-<div className="button-group">
-  <form id="search" onSubmit={(e) => {
+  <form id="search"  className="search-bar" onSubmit={(e) => {
     e.preventDefault();
     getCityWeather(city)
     setCity("");
-    console.log(city)
   }}>
     <input type="text" placeholder="Search..." value={city} onChange={(e) => {
       setCity(e.target.value)
     }
-    }/>
-    <input type="submit" value="Show weather" />
+    }
+    className="search-bar__input"/>
+    <input type="submit" value="Show weather" className="search-bar__button" />
   </form>
-</div>
 
 
 <div className="weather">
 
   <div className="weather__current">
-  {weather === null ? "loading" : (
+  {loading && "loading" }
+  {error && "no data for this city" }
+  {!error && !loading && (
     <>
-    <h2 className="weather__city" id="mesto">
-      {weather.name}
-    </h2>
+      <h2 className="weather__city" id="mesto">
+        {weather.name}
+      </h2>
 
-    <div className="weather__inner weather__inner--center">
-      <div className="weather__section weather__section--temp">
-        <span className="weather__temp-value" id="teplota">{Math.round(weather.main.temp)}</span>
-        <span className="weather__temp-unit">°C</span>
+      <div className="weather__inner weather__inner--center">
+        <div className="weather__section weather__section--temp">
+          <span className="weather__temp-value" id="teplota">{Math.round(weather.main.temp)}</span>
+          <span className="weather__temp-unit">°C</span>
+          
+          <div className="weather__description" id="popis">{weather.weather[0].main}</div>
+        </div>
+        <div className="weather__section weather__section--icon" id="ikona">
+          <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt="current weather icon" />
+        </div>
+      </div>
+
+      <div className="weather__inner">
+        <div className="weather__section">
+          <h3 className="weather__title">Wind</h3>
+          <div className="weather__value">
+            <span id="vitr">{weather.wind.speed}</span> km/h
+          </div>
+        </div>
+        <div className="weather__section">
+          <h3 className="weather__title">Humidity</h3>
+          <div className="weather__value">
+            <span id="vlhkost">{weather.main.humidity}</span> %
+          </div>
+        </div>
+      </div>
+
+      <div className="weather__inner">
+      
+        <div className="weather__section">
+          <h3 className="weather__title">Sunrise</h3>
+          <div className="weather__value">
+            <span id="vychod">{getTimefromUnix(weather.sys.sunrise)}</span>
+          </div>
+        </div>
         
-        <div className="weather__description" id="popis">{weather.weather[0].main}</div>
-      </div>
-      <div className="weather__section weather__section--icon" id="ikona">
-        <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt="current weather icon" />
-      </div>
-    </div>
-
-    <div className="weather__inner">
-      <div className="weather__section">
-        <h3 className="weather__title">Wind</h3>
-        <div className="weather__value">
-          <span id="vitr">{weather.wind.speed}</span> km/h
+        <div className="weather__section">
+          <h3 className="weather__title">Sunset</h3>
+          <div className="weather__value">
+            <span id="zapad">{getTimefromUnix(weather.sys.sunset)}</span>
+          </div>
         </div>
       </div>
-      <div className="weather__section">
-        <h3 className="weather__title">Humidity</h3>
-        <div className="weather__value">
-          <span id="vlhkost">{weather.main.humidity}</span> %
-        </div>
-      </div>
-    </div>
-
-    <div className="weather__inner">
-     
-       <div className="weather__section">
-        <h3 className="weather__title">Sunrise</h3>
-        <div className="weather__value">
-          <span id="vychod">{getTimefromUnix(weather.sys.sunrise)}</span>
-        </div>
-      </div>
-       
-      <div className="weather__section">
-        <h3 className="weather__title">Sunset</h3>
-        <div className="weather__value">
-          <span id="zapad">{getTimefromUnix(weather.sys.sunset)}</span>
-        </div>
-      </div>
-    </div>
     </>
     )}
   </div>

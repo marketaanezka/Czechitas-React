@@ -186,3 +186,46 @@ h1 {
 .button:last-child {
   border-radius: 0 5px 5px 0;
 }
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 350px;
+  margin: 10px auto;
+  border-radius: 10px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.7)
+}
+
+.search-bar__input, 
+.search-bar__button {
+  border: none;
+  background-image:none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+}
+
+.search-bar__input {
+  background-color: rgba(255, 221, 244, 0.795);
+  padding: 0.5rem 1rem;
+  border-radius: 10px 0 0 10px;
+}
+
+.search-bar__input:focus {
+  background-color: rgba(255, 242, 251, 0.849);
+  outline: none;
+}
+
+.search-bar__button {
+  padding: 0.5rem;
+  font-weight: 400;
+  background: #ff3e78 linear-gradient(to top, #ff3e78, #777bf0);
+  color: #fff;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  border-radius: 0 10px 10px 0;
+}
