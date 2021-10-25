@@ -10,11 +10,22 @@ const getTimefromUnix = (unix) => {
   )
 }
 
+const getDayfromUnix = (unix) => {
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
+  const date = new Date(unix * 1000)
+  return(`${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]}`);
+}
+
+const filterForecast = (array) => {
+  return array.filter((item, index) => index % 8 === 0);
+}
+
 const App = () => {
   const [weather, setWeather] = useState(null);
-  const [city, setCity] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [forecast, setForecast] = useState(false);
 
   const fetchWeather = () => {
     setLoading(true);
@@ -22,6 +33,20 @@ const App = () => {
     .then((response) => { 
       return response.json().then((data) => {
         setWeather(data);
+        console.log(data);
+        setLoading(false);
+      }).catch((err) => {
+         console.log("error", err);
+      }) 
+  });
+  };
+
+  const fetchForecast = () => {
+    setLoading(true);
+    fetch("https://api.openweathermap.org/data/2.5/forecast?q=Brno&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f")
+    .then((response) => { 
+      return response.json().then((data) => {
+        setForecast(filterForecast(data.list));
         setLoading(false);
       }).catch((err) => {
          console.log("error", err);
@@ -53,6 +78,7 @@ const App = () => {
 
   useEffect(() => {
     fetchWeather();
+    fetchForecast();
   }, [])
 
   return (
@@ -65,11 +91,11 @@ const App = () => {
 
 <div className="button-group">
   <button className="button" onClick={() => getCityWeather("Prague")}>Prague</button>
-  <button className="button" onClick={() => getCityWeather("Tenerife")}>Tenerife</button>
+  <button className="button" onClick={() => getCityWeather("Moscow")}>Moscow</button>
   <button className="button" onClick={() => getCityWeather("Reykjavik")}>Reykjavik</button>
 </div>
 
-  <form id="search"  className="search-bar" onSubmit={(e) => {
+  {/* <form id="search"  className="search-bar" onSubmit={(e) => {
     e.preventDefault();
     getCityWeather(city)
     setCity("");
@@ -80,15 +106,13 @@ const App = () => {
     }
     className="search-bar__input"/>
     <input type="submit" value="Show weather" className="search-bar__button" />
-  </form>
+  </form> */}
 
 
 <div className="weather">
 
   <div className="weather__current">
-  {loading && "loading" }
-  {error && "no data for this city" }
-  {!error && !loading && (
+  { !weather ? "loading" : (
     <>
       <h2 className="weather__city" id="mesto">
         {weather.name}
@@ -122,14 +146,12 @@ const App = () => {
       </div>
 
       <div className="weather__inner">
-      
         <div className="weather__section">
           <h3 className="weather__title">Sunrise</h3>
           <div className="weather__value">
             <span id="vychod">{getTimefromUnix(weather.sys.sunrise)}</span>
           </div>
-        </div>
-        
+        </div> 
         <div className="weather__section">
           <h3 className="weather__title">Sunset</h3>
           <div className="weather__value">
@@ -141,28 +163,28 @@ const App = () => {
     )}
   </div>
 
-  
-
-  
-
-  {/* <div className="weather__forecast" id="predpoved">
-
-   
-      do tohoto divu vygeneruj HTML pro jednotlivé dny předpovědi
-      podle následující šablony
-   
-    <div className="forecast">
-      <div className="forecast__day">Pondělí 22. 4.</div>
-      <div className="forecast__icon">
-        <i className="wi wi-owm-night-602"></i>
-      </div>
-      <div className="forecast__temp">18 °C</div>
+    <div className="weather__forecast" id="predpoved">
+      { !forecast ? "loading" : 
+        forecast.map((item) => {
+          console.log(item)
+        return(
+          <div className="forecast" key={item.dt}>
+            <div className="forecast__day">{getDayfromUnix(item.dt)}</div>
+            <div className="forecast__icon">
+              <img src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`} style={{height: "100%"}} alt="current weather icon" />
+            </div>
+            <div className="forecast__temp">{Math.round(item.main.temp)} °C</div>
+          </div>
+        )
+        }
+          )
+      
+        
+        }
     </div>
 
-  </div> */}
-
-</div>
   </div>
+</div>
 );
 }
 

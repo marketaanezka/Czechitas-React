@@ -105,7 +105,6 @@ h1 {
   text-align: center;
 }
 
-
 .weather__section--icon i {
   font-size: 64px;
 }
@@ -135,10 +134,7 @@ h1 {
 }
 
 .forecast__icon {
-  flex: 0 0 30px;
-  font-size: 20px;
-  text-align: center;
-  color: #ff3e78;
+  height: 40px;
 }
 
 .forecast__temp {

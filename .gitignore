@@ -16,6 +16,9 @@ pids
 *.seed
 *.pid.lock
 
+#Api keys
+.env
+
 # Dependency directories
 node_modules/
 
