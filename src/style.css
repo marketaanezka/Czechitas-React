@@ -51,6 +51,7 @@ h1 {
 }
 
 .weather__current {
+  min-height: 360px;
   padding: 20px;
   background:  #ff8caf78 linear-gradient(to bottom, #ff97b673, #f4cd798f); 
   color: #fff;
@@ -132,8 +133,9 @@ h1 {
 
 
 .weather__forecast {
+  min-height: 360px;
   color: #000;
-  background-color: #ffe9e9cf;
+  background-color: #ffe9f2e3;
 }
 
 .forecast {
@@ -145,7 +147,7 @@ h1 {
 }
 
 .forecast:hover {
-  background-color: #fff3d970;
+  background-color: #f0e2eade;
 }
 
 .forecast__day {
@@ -216,10 +218,17 @@ h1 {
   box-shadow: none;
   font-family: Montserrat, sans-serif;
   font-size: 16px;
-  background-color: rgba(244, 221, 255, 0.795);
+  background-color: #ffe9f2e3;
 }
 
 .select:focus {
-  background-color: rgba(246, 226, 255, 0.884);
+  background-color: #f0e2eade;
   outline: none;
+}
+
+.loading {
+  color: #ffff;
+  text-align: center;
+  padding: 20px auto;
+  width: 340px;
 }
