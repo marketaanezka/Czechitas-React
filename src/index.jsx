@@ -21,20 +21,49 @@ const filterForecast = (array) => {
   return array.filter((item, index) => index % 8 === 0);
 }
 
+const fetchCurrentWeather = (city, setState) => {
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f`)
+  .then((response) => {
+    if (response.ok) {
+      response.json()
+      .then((data) => {
+        setState(data);
+        console.log("fetched", data);
+      })
+    } else {
+      setState(null);
+      console.log(response);
+    }
+  })
+}
+
+const fetchWeatherForecast = (city, setState) => {
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f`)
+  .then((response) => {
+    if (response.ok) {
+      response.json()
+      .then((data) => {
+        setState(filterForecast(data.list));
+        console.log("fetched forecast", data);
+      })
+    } else {
+      setState(null);
+      console.log(response);
+    }
+  })
+}
+
 const App = () => {
   const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [forecast, setForecast] = useState(false);
+  const [city, setCity] = useState("Prague");
 
   const fetchWeather = () => {
-    setLoading(true);
     fetch("https://api.openweathermap.org/data/2.5/weather?q=Brno&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f")
     .then((response) => { 
       return response.json().then((data) => {
         setWeather(data);
         console.log(data);
-        setLoading(false);
       }).catch((err) => {
          console.log("error", err);
       }) 
@@ -42,44 +71,21 @@ const App = () => {
   };
 
   const fetchForecast = () => {
-    setLoading(true);
     fetch("https://api.openweathermap.org/data/2.5/forecast?q=Brno&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f")
     .then((response) => { 
       return response.json().then((data) => {
         setForecast(filterForecast(data.list));
-        setLoading(false);
       }).catch((err) => {
          console.log("error", err);
       }) 
   });
   };
 
-  const getCityWeather = (city) => {
-    if (city !== "") {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f`)
-    .then((response) => { 
-      if (response.ok) {
-        return response.json().then((data) => {
-          setWeather(data);
-          console.log(data);
-          setError(false);
-        })
-      } else {
-        setError(true)
-      }})      
-    .catch((err) => {
-      setError(true);
-      console.log("error", err);
-      }) 
-    }
-    }
-  
-
-
   useEffect(() => {
-    fetchWeather();
-    fetchForecast();
-  }, [])
+    fetchCurrentWeather(city, setWeather);
+    // fetchForecast();
+    fetchWeatherForecast(city, setForecast);
+  }, [city])
 
   return (
   <div className="container">
@@ -90,9 +96,9 @@ const App = () => {
 {/* tlačítka pro výběr města - bonusová část úkolu */}
 
 <div className="button-group">
-  <button className="button" onClick={() => getCityWeather("Prague")}>Prague</button>
-  <button className="button" onClick={() => getCityWeather("Moscow")}>Moscow</button>
-  <button className="button" onClick={() => getCityWeather("Reykjavik")}>Reykjavik</button>
+  <button className="button" onClick={() => setCity("Prague")}>Prague</button>
+  <button className="button" onClick={() => setCity("Moscow")}>Moscow</button>
+  <button className="button" onClick={() => setCity("Reykjavik")}>Reykjavik</button>
 </div>
 
   {/* <form id="search"  className="search-bar" onSubmit={(e) => {
