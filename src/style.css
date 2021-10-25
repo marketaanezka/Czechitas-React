@@ -24,7 +24,12 @@ h1 {
   text-align: center;
   color: #fff;
 }
-
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .weather {
   margin: 10px auto 30px auto;
   width: 350px;
@@ -36,8 +41,12 @@ h1 {
 
 .weather__current {
   padding: 20px;
-  background: #ff3e78 linear-gradient(to bottom, #ff3e78, #ffbd2e);
+  background:  #ff8caf78 linear-gradient(to bottom, #ff97b673, #f4cd798f); 
   color: #fff;
+}
+
+.weather__current--cold {
+  background:  #8ca7ff78 linear-gradient(to bottom, #97eaff73, #a479f48f);
 }
 
 .weather__city {
@@ -113,7 +122,7 @@ h1 {
 
 .weather__forecast {
   color: #000;
-  background-color: #fff;
+  background-color: #ffe9e9cf;
 }
 
 .forecast {
@@ -121,11 +130,11 @@ h1 {
   padding: 15px 30px;
   display: flex;
   align-items: center;
-  color: #666;
+  color: #333;
 }
 
 .forecast:hover {
-  background-color: #fff3d9;
+  background-color: #fff3d99f;
 }
 
 .forecast__day {
@@ -159,7 +168,7 @@ h1 {
   font-family: Montserrat, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  background: #ff3e78 linear-gradient(to top, #ff3e78, #777bf0);
+  background: #fb99b6 linear-gradient(to top, #ad395c6e, #494b9ca1);
   color: #fff;
   border: 0;
   outline: 0;
@@ -169,7 +178,7 @@ h1 {
 .button:hover,
 .button:focus,
 .button:active {
-  background: #ff3e78 linear-gradient(to top, #ff3e78, #453df8);
+  background: #fb99b6 linear-gradient(to top, #a53a5abe, #494a9cc7);
 }
 
 .button + .button {
@@ -183,18 +192,12 @@ h1 {
   border-radius: 0 5px 5px 0;
 }
 
-.search-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+select {
   width: 350px;
-  margin: 10px auto;
+  max-width: 100%;
+  height: 40px;
+  padding: 0 10px;
   border-radius: 10px;
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.7)
-}
-
-.search-bar__input, 
-.search-bar__button {
   border: none;
   background-image:none;
   -webkit-box-shadow: none;
@@ -202,26 +205,10 @@ h1 {
   box-shadow: none;
   font-family: Montserrat, sans-serif;
   font-size: 16px;
+  background-color: rgba(244, 221, 255, 0.795);
 }
 
-.search-bar__input {
-  background-color: rgba(255, 221, 244, 0.795);
-  padding: 0.5rem 1rem;
-  border-radius: 10px 0 0 10px;
-}
-
-.search-bar__input:focus {
-  background-color: rgba(255, 242, 251, 0.849);
-  outline: none;
-}
-
-.search-bar__button {
-  padding: 0.5rem;
-  font-weight: 400;
-  background: #ff3e78 linear-gradient(to top, #ff3e78, #777bf0);
-  color: #fff;
-  border: 0;
-  outline: 0;
-  cursor: pointer;
-  border-radius: 0 10px 10px 0;
+select:focus {
+  background-color: rgba(246, 226, 255, 0.884);
+   outline: none;
 }

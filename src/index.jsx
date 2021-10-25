@@ -9,6 +9,8 @@ const getTimefromUnix = (unix) => {
     `
   )
 }
+const cities = ['Abuja', 'Amsterdam', 'Aswān', 'Athens', 'Bangkok', 'Barcelona', 'Belgrade', 'Brno', 'Budapest', 'Buenos Aires', 'Cape Town', 'Dakar', 'El Alto', 'Hanoi', 'Harbin', 'Kingston', 'Kuala Lumpur', 'Kuwait', 'Kyiv', 'Lagos', 'Ljubljana', 'London', 'Madrid', 'Melbourne', 'Miami', 'Minsk', 'Moscow', 'New Delhi', 'New York', 'Norilsk', 'Paris', 'Porto', 'Prague', 'Riga', 'Santiago', 'Seoul', 'Skopje', 'Sofia', 'Split', 'Sydney', 'São Paulo', 'Tallinn', 'Tirana', 'Toronto', 'Vancouver', 'Vienna', 'Vilnius', 'Warsaw', 'Winnipeg', 'Yakutsk'];
+console.log(cities.sort());
 
 const getDayfromUnix = (unix) => {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -44,7 +46,6 @@ const fetchWeatherForecast = (city, setState) => {
       response.json()
       .then((data) => {
         setState(filterForecast(data.list));
-        console.log("fetched forecast", data);
       })
     } else {
       setState(null);
@@ -54,21 +55,9 @@ const fetchWeatherForecast = (city, setState) => {
 }
 
 const App = () => {
+  const [city, setCity] = useState("Prague");
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState(false);
-  const [city, setCity] = useState("Prague");
-
-  const fetchWeather = () => {
-    fetch("https://api.openweathermap.org/data/2.5/weather?q=Brno&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f")
-    .then((response) => { 
-      return response.json().then((data) => {
-        setWeather(data);
-        console.log(data);
-      }).catch((err) => {
-         console.log("error", err);
-      }) 
-  });
-  };
 
   const fetchForecast = () => {
     fetch("https://api.openweathermap.org/data/2.5/forecast?q=Brno&units=metric&APPID=60990aef3d3c4f5a36b9de246444ca2f")
@@ -83,7 +72,6 @@ const App = () => {
 
   useEffect(() => {
     fetchCurrentWeather(city, setWeather);
-    // fetchForecast();
     fetchWeatherForecast(city, setForecast);
   }, [city])
 
@@ -92,36 +80,24 @@ const App = () => {
     
   <h1>Počasí</h1>
 
+    <div className="button-group">
+      <button className="button" onClick={() => setCity("Prague")}>Prague</button>
+      <button className="button" onClick={() => setCity("Tenerife")}>Tenerife</button>
+      <button className="button" onClick={() => setCity("Reykjavik")}>Reykjavik</button>
+    </div>
+    
+    <div className="select">
+        <select name="cityselect" id="cityselect" value={city} onChange={(e) => setCity(e.target.value)}>
+          {cities.map((city) => <option value={city}>{city}</option>)}
+        </select>
+      </div>
 
-{/* tlačítka pro výběr města - bonusová část úkolu */}
-
-<div className="button-group">
-  <button className="button" onClick={() => setCity("Prague")}>Prague</button>
-  <button className="button" onClick={() => setCity("Moscow")}>Moscow</button>
-  <button className="button" onClick={() => setCity("Reykjavik")}>Reykjavik</button>
-</div>
-
-  {/* <form id="search"  className="search-bar" onSubmit={(e) => {
-    e.preventDefault();
-    getCityWeather(city)
-    setCity("");
-  }}>
-    <input type="text" placeholder="Search..." value={city} onChange={(e) => {
-      setCity(e.target.value)
-    }
-    }
-    className="search-bar__input"/>
-    <input type="submit" value="Show weather" className="search-bar__button" />
-  </form> */}
-
-
-<div className="weather">
-
-  <div className="weather__current">
-  { !weather ? "loading" : (
-    <>
+    <div className="weather">
+    { !weather ? "loading" : (
+      <div className={`weather__current ${weather.main.temp < 10 ? "weather__current--cold": ""}`}>
+      
       <h2 className="weather__city" id="mesto">
-        {weather.name}
+        {weather.name}, {weather.sys.country}
       </h2>
 
       <div className="weather__inner weather__inner--center">
@@ -165,14 +141,13 @@ const App = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
     )}
-  </div>
+  
 
     <div className="weather__forecast" id="predpoved">
       { !forecast ? "loading" : 
         forecast.map((item) => {
-          console.log(item)
         return(
           <div className="forecast" key={item.dt}>
             <div className="forecast__day">{getDayfromUnix(item.dt)}</div>
