@@ -9,7 +9,7 @@ const getTimefromUnix = (unix) => {
     `
   )
 }
-const cities = ['Abuja', 'Amsterdam', 'Aswān', 'Athens', 'Bangkok', 'Barcelona', 'Belgrade', 'Brno', 'Budapest', 'Buenos Aires', 'Cape Town', 'Dakar', 'El Alto', 'Hanoi', 'Harbin', 'Kingston', 'Kuala Lumpur', 'Kuwait', 'Kyiv', 'Lagos', 'Ljubljana', 'London', 'Madrid', 'Melbourne', 'Miami', 'Minsk', 'Moscow', 'New Delhi', 'New York', 'Norilsk', 'Paris', 'Porto', 'Prague', 'Riga', 'Santiago', 'Seoul', 'Skopje', 'Sofia', 'Split', 'Sydney', 'São Paulo', 'Tallinn', 'Tirana', 'Toronto', 'Vancouver', 'Vienna', 'Vilnius', 'Warsaw', 'Winnipeg', 'Yakutsk'];
+const cities = ['Abuja', 'Amsterdam', 'Aswān', 'Athens', 'Bangkok', 'Barcelona', 'Belgrade', 'Brno', 'Budapest', 'Buenos Aires', 'Cape Town', 'Dakar', 'El Alto', 'Hanoi', 'Harbin', 'Kingston', 'Kuala Lumpur', 'Kuwait', 'Kyiv', 'Lagos', 'Ljubljana', 'London', 'Madrid', 'Melbourne', 'Miami', 'Minsk', 'Moscow', 'New Delhi', 'New York', 'Norilsk', 'Paris', 'Porto', 'Prague', 'Reykjavik', 'Seoul', 'Skopje', 'Sofia', 'Split', 'Sydney', 'São Paulo', 'Tallinn', 'Tenerife', 'Tirana', 'Toronto', 'Vancouver', 'Vienna', 'Vilnius', 'Warsaw', 'Winnipeg', 'Yakutsk'];
 console.log(cities.sort());
 
 const getDayfromUnix = (unix) => {
@@ -78,7 +78,7 @@ const App = () => {
   return (
   <div className="container">
     
-  <h1>Počasí</h1>
+  <h1>My Weather App</h1>
 
     <div className="button-group">
       <button className="button" onClick={() => setCity("Prague")}>Prague</button>
@@ -86,8 +86,8 @@ const App = () => {
       <button className="button" onClick={() => setCity("Reykjavik")}>Reykjavik</button>
     </div>
     
-    <div className="select">
-        <select name="cityselect" id="cityselect" value={city} onChange={(e) => setCity(e.target.value)}>
+    <div className="select-wrapper">
+        <select className="select" name="cityselect" id="cityselect" value={city} onChange={(e) => setCity(e.target.value)}>
           {cities.map((city) => <option value={city}>{city}</option>)}
         </select>
       </div>
